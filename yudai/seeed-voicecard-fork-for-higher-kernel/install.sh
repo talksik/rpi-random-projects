@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Color
-RED='\033[0;31m'
-NC='\033[0m' # No Color
-
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root (use sudo)" 1>&2
    exit 1
@@ -56,7 +52,6 @@ if [ $errorFound = 1 ] ; then
   exit 1
 fi
 
-
 ver="0.3"
 uname_r=$(uname -r)
 
@@ -70,10 +65,12 @@ function get_kernel_version() {
 
   _VER_RUN=""
   [ -z "$_VER_RUN" ] && {
-    ZIMAGE=/boot/kernel8.img
+    ZIMAGE=/boot/kernel.img
     [ -f /boot/firmware/vmlinuz ] && ZIMAGE=/boot/firmware/vmlinuz
+    # 64-bit-only kernel package
+    [ ! -f /boot/kernel.img ] && [ -f /boot/kernel8.img ] && ZIMAGE=/boot/kernel8.img
     IMG_OFFSET=$(LC_ALL=C grep -abo $'\x1f\x8b\x08\x00' $ZIMAGE | head -n 1 | cut -d ':' -f 1)
-    _VER_RUN=$(dd if=$ZIMAGE obs=64K ibs=4 skip=$(( IMG_OFFSET / 4)) 2>/dev/null | zcat | grep -a -m1 "Linux version" | strings | awk '{ print $3; }')
+    _VER_RUN=$(dd if=$ZIMAGE obs=64K ibs=4 skip=$(( IMG_OFFSET / 4)) 2>/dev/null | zcat | grep -a -m1 "Linux version" | LC_ALL=C sed -e 's/^.*Linux/Linux/' | strings | awk '{ print $3; }')
   }
   echo "$_VER_RUN"
   return 0
@@ -81,15 +78,11 @@ function get_kernel_version() {
 
 function check_kernel_headers() {
   VER_RUN=$(get_kernel_version)
-  VER_HDR=$(dpkg -L raspberrypi-kernel-headers | egrep -m1 "/lib/modules/[[:print:]]+/build" | awk -F'/' '{ print $4; }')
-  echo $VER_RUN
-  echo $VER_HDR
+  VER_HDR=$(dpkg -L raspberrypi-kernel-headers | egrep -m1 "/lib/modules/[^-]+/build" | awk -F'/' '{ print $4; }')
   [ "X$VER_RUN" == "X$VER_HDR" ] && {
     return 0
   }
   VER_HDR=$(dpkg -L linux-headers-$VER_RUN | egrep -m1 "/lib/modules/[[:print:]]+/build" | awk -F'/' '{ print $4; }')
-  echo $VER_RUN
-  echo $VER_HDR
   [ "X$VER_RUN" == "X$VER_HDR" ] && {
     return 0
   }
@@ -112,9 +105,11 @@ function check_kernel_headers() {
 # update and install required packages
 which apt &>/dev/null
 if [[ $? -eq 0 ]]; then
-  #apt update -y
+  apt update -y
   # Raspbian kernel packages
   apt-get -y install raspberrypi-kernel-headers raspberrypi-kernel 
+  # Recent Raspbian has 64-bit kernel on 32-bit userspace
+  apt-get -y install gcc-aarch64-linux-gnu
   # Ubuntu kernel packages
   apt-get -y install linux-raspi linux-headers-raspi linux-image-raspi
   apt-get -y install dkms git i2c-tools libasound2-plugins
@@ -134,16 +129,6 @@ base_ver=$(get_kernel_version)
 base_ver=${base_ver%%[-+]*}
 #kernels="${base_ver}+ ${base_ver}-v7+ ${base_ver}-v7l+"
 kernels=$(uname -r)
-kernel_base_ver=${kernels%%[-+]*}
-
-if [[ "$base_ver" != "$kernel_base_ver" ]] ; then
-  echo "------------------------------------------------------"
-  echo -e " ${RED}WARNING${NC} Your loaded kernel version is $kernel_base_ver"
-  echo " Not matching the updated version $base_ver."
-  echo " Kernel was updated, but new kernel was not loaded yet"
-  echo -e " Please ${RED}reboot${NC} your machine AND THEN run this script ${RED}again"
-  exit 1;
-fi
 
 function install_module {
   local _i
@@ -174,6 +159,7 @@ function install_module {
 }
 
 install_module "./" "seeed-voicecard"
+
 
 # install dtbos
 cp seeed-2mic-voicecard.dtbo $OVERLAYS

@@ -30,6 +30,20 @@
 
 #define LINUX_VERSION_IS_GEQ(x1,x2,x3)	(LINUX_VERSION_CODE >= KERNEL_VERSION(x1,x2,x3))
 
+
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,13,0)
+#define asoc_simple_parse_clk_cpu(dev, node, dai_link, simple_dai)      \
+  asoc_simple_parse_clk(dev, node, simple_dai, dai_link->cpus)
+#define asoc_simple_parse_clk_codec(dev, node, dai_link, simple_dai)    \
+  asoc_simple_parse_clk(dev, node, simple_dai, dai_link->codecs)
+#define asoc_simple_parse_cpu(node, dai_link, is_single_link)           \
+  asoc_simple_parse_dai(node, dai_link->cpus, is_single_link)
+#define asoc_simple_parse_codec(node, dai_link)                         \
+  asoc_simple_parse_dai(node, dai_link->codecs, NULL)
+#define asoc_simple_parse_platform(node, dai_link)                      \
+  asoc_simple_parse_dai(node, dai_link->platforms, NULL)
+#endif
+
 /*
  * single codec:
  *	0 - allow multi codec
@@ -340,6 +354,11 @@ static int asoc_simple_init_dai(struct snd_soc_dai *dai,
 }
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5,7,0)
+static inline int asoc_simple_component_is_codec(struct snd_soc_component *component)
+{
+	return component->driver->endianness;
+}
+
 static int asoc_simple_init_dai_link_params(struct snd_soc_pcm_runtime *rtd)
 {
 	struct snd_soc_dai_link *dai_link = rtd->dai_link;
@@ -348,9 +367,9 @@ static int asoc_simple_init_dai_link_params(struct snd_soc_pcm_runtime *rtd)
 	struct snd_pcm_hardware hw;
 	int i, ret, stream;
 
-	/* Only codecs should have non_legacy_dai_naming set. */
+	/* Only Codecs */
 	for_each_rtd_components(rtd, i, component) {
-		if (!component->driver->non_legacy_dai_naming)
+		if (!asoc_simple_component_is_codec(component))
 			return 0;
 	}
 
@@ -543,10 +562,17 @@ static int seeed_voice_card_dai_link_of(struct device_node *node,
 		#endif
 		dai_props->codec_dai.sysclk);
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,13,0)
+	asoc_simple_canonicalize_cpu(dai_link->cpus, single_cpu);
+	#if _SINGLE_CODEC
+	asoc_simple_canonicalize_platform(dai_link->platforms, dai_link->cpus);
+	#endif
+#else
 	asoc_simple_canonicalize_cpu(dai_link, single_cpu);
 	#if _SINGLE_CODEC
 	asoc_simple_canonicalize_platform(dai_link);
 	#endif
+#endif
 
 dai_link_of_err:
 	of_node_put(cpu);
@@ -865,7 +891,9 @@ static int seeed_voice_card_remove(struct platform_device *pdev)
 
 	if (cancel_work_sync(&priv->work_codec_clk) != 0) {
 	}
-	return asoc_simple_clean_reference(card);
+	asoc_simple_clean_reference(card);
+
+	return 0;
 }
 
 static const struct of_device_id seeed_voice_of_match[] = {

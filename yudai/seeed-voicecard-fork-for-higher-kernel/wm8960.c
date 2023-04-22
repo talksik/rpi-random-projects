@@ -1291,7 +1291,6 @@ static const struct snd_soc_codec_driver soc_codec_dev_wm8960 = {
 	.idle_bias_on		= 1,
 	.use_pmdown_time	= 1,
 	.endianness		= 1,
-	.non_legacy_dai_naming	= 1,
 	#endif
 };
 
@@ -1385,10 +1384,9 @@ static int wm8960_i2c_probe(struct i2c_client *i2c,
 	return ret;
 }
 
-static int wm8960_i2c_remove(struct i2c_client *client)
+static void wm8960_i2c_remove(struct i2c_client *client)
 {
 	snd_soc_unregister_codec(&client->dev);
-	return 0;
 }
 
 static const struct i2c_device_id wm8960_i2c_id[] = {
