@@ -2,7 +2,7 @@ import pyaudio
 import wave
 
 RESPEAKER_RATE = 16000
-RESPEAKER_CHANNELS = 2 
+RESPEAKER_CHANNELS = 2
 RESPEAKER_WIDTH = 2
 # run getDeviceInfo.py to get index
 RESPEAKER_INDEX = 1  # refer to input device id
@@ -25,6 +25,7 @@ frames = []
 
 for i in range(0, int(RESPEAKER_RATE / CHUNK * RECORD_SECONDS)):
     data = stream.read(CHUNK)
+    print("read a chunk")
     frames.append(data)
 
 print("* done recording")
