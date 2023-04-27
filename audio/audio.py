@@ -60,6 +60,8 @@ class Audio:
         wf.close()
 
     def _playFrames(self):
+        print("* playing recorded audio")
+
         playbackStream = self.pyaudio.open(
             format=self.pyaudio.get_format_from_width(RESPEAKER_WIDTH),
             channels=RESPEAKER_CHANNELS,
@@ -69,6 +71,7 @@ class Audio:
 
         # loop through self.frames and play audio
         for frame in self.frames:
+            print("playing a frame")
             playbackStream.write(frame)
 
         # cleanup stuff
