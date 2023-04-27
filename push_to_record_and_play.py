@@ -2,7 +2,6 @@
 # it will then play the audio back to the user from memory
 
 import RPi.GPIO as GPIO
-import time
 
 # importing sys
 import sys
@@ -27,5 +26,3 @@ while True:
     else:
         if not audioInstance.isRecording():
             audioInstance.startRecord()
-
-    time.sleep(1)

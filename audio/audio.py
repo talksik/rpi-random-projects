@@ -18,6 +18,8 @@ class Audio:
         self.frames = []
         self.pyaudio = pyaudio.PyAudio()
         self.recordStream = None
+        self.playbackStream = None
+        self._isRecording = False
 
     def readCallback(self, out_data, frame_count, time_info, status):
         self.frames.append(out_data)
@@ -26,9 +28,7 @@ class Audio:
         return (out_data, pyaudio.paContinue)
 
     def isRecording(self):
-        if self.recordStream is None:
-            return False
-        return self.recordStream.is_active()
+        return self._isRecording
 
     def startRecord(self):
         print("* recording stream started")
@@ -41,12 +41,14 @@ class Audio:
             start=False,
             stream_callback=self.readCallback,)
         self.recordStream.start_stream()
+        self._isRecording = True
         self.frames = []
 
     def stopRecord(self, play=True, save=False):
         print("* done recording")
         self.recordStream.stop_stream()
         self.recordStream.close()
+        self._isRecording = False
 
         if save:
             self._saveFile()
@@ -68,7 +70,7 @@ class Audio:
         print("* playing recorded audio")
         print(len(self.frames))
 
-        playbackStream = self.pyaudio.open(
+        self.playbackStream = self.pyaudio.open(
             format=self.pyaudio.get_format_from_width(RESPEAKER_WIDTH),
             channels=RESPEAKER_CHANNELS,
             rate=RESPEAKER_RATE,
@@ -77,13 +79,13 @@ class Audio:
 
         # loop through self.frames and play audio
         for frame in self.frames:
-            playbackStream.write(frame)
+            self.playbackStream.write(frame)
 
         print("* done playing recorded audio")
 
         # cleanup stuff
-        playbackStream.stop_stream()
-        playbackStream.close()
+        self.playbackStream.stop_stream()
+        self.playbackStream.close()
 
     def terminate(self):
         self.pyaudio.terminate()
