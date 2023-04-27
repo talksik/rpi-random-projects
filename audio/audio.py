@@ -10,7 +10,6 @@ RESPEAKER_WIDTH = 2
 # run getDeviceInfo.py to get index
 RESPEAKER_INDEX = 1  # refer to input device id
 CHUNK = 1024
-RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output.wav"
 
 
@@ -27,22 +26,30 @@ class Audio:
             start=False,)
 
     def startRecord(self):
+        print("* recording stream started")
+        self.recordStream.start_stream()
+        self.readChunk()
+
+    def isRecording(self):
+        return self.recordStream.is_active()
+
+    def readChunk(self):
         self.frames = []
-        print("* recording")
-        for i in range(0, int(RESPEAKER_RATE / CHUNK * RECORD_SECONDS)):
-            data = self.recordStream.read(CHUNK)
-            print("read a chunk")
-            self.frames.append(data)
+        print("reading chunk")
+        data = self.recordStream.read(CHUNK)
+        self.frames.append(data)
 
     def stopRecord(self, play=True, save=False):
         print("* done recording")
         print(self.frames)
         self.recordStream.stop_stream()
         self.stream.close()
-        self.pyaudio.terminate()
 
         if save:
             self._saveFile()
+
+    def terminate(self):
+        self.pyaudio.terminate()
 
     def _saveFile(self):
         wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
@@ -67,4 +74,3 @@ class Audio:
 
         # cleanup stuff
         self.playbackStream.close()
-        self.pyaudio.terminate()
