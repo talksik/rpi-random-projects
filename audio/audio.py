@@ -25,28 +25,29 @@ class Audio:
             input_device_index=RESPEAKER_INDEX,
             start=False,)
 
-    def startRecord(self):
-        print("* recording stream started")
-        self.recordStream.start_stream()
-        self.readChunk()
-
     def isRecording(self):
         return self.recordStream.is_active()
 
-    def readChunk(self):
+    def startRecord(self):
+        print("* recording stream started")
+        self.recordStream.start_stream()
         self.frames = []
+
+    def readChunk(self):
         print("reading chunk")
         data = self.recordStream.read(CHUNK)
         self.frames.append(data)
 
     def stopRecord(self, play=True, save=False):
         print("* done recording")
-        print(self.frames)
         self.recordStream.stop_stream()
-        self.stream.close()
+        self.recordStream.close()
+        self.frames = []
 
         if save:
             self._saveFile()
+        if play:
+            self._playFrames()
 
     def terminate(self):
         self.pyaudio.terminate()
@@ -60,7 +61,7 @@ class Audio:
         wf.writeframes(b''.join(self.frames))
         wf.close()
 
-    def playFrames(self):
+    def _playFrames(self):
         self.playbackStream = self.pyaudio.open(
             format=self.pyaudio.get_format_from_width(RESPEAKER_WIDTH),
             channels=RESPEAKER_CHANNELS,
@@ -73,4 +74,5 @@ class Audio:
             self.playbackStream.write(frame)
 
         # cleanup stuff
+        self.playbackStream.stop_stream()
         self.playbackStream.close()
