@@ -1,18 +1,15 @@
 import time
 
-import os
+from subprocess import call
 
 
 def robot(text):
     print("executing command")
-    command = 'espeak --stdin "' + text + '" | aplay -D plughw:2,0 '
-    os.system(command)
-    return command
+    call(['espeak', '--stdin', '"Hello world how are you doing today?"', '|', 'aplay', '-D', 'plughw:2,0'])
 
 
 if __name__ == '__main__':
     while True:
-
         try:
             print("initializing")
             command = robot("Hello world how are you doing today?")
