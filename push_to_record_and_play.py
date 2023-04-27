@@ -22,7 +22,7 @@ while True:
 
     if state:
         if audioInstance.isRecording():
-            audioInstance.stopRecord(play=False)
+            audioInstance.stopRecord()
     else:
         if not audioInstance.isRecording():
             audioInstance.startRecord()
