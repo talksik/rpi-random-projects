@@ -43,12 +43,13 @@ class Audio:
     def stopRecord(self, play=True, save=False):
         print("* done recording")
         self.recordStream.stop_stream()
-        self.frames = []
 
         if save:
             self._saveFile()
         if play:
             self._playFrames()
+
+        self.frames = []
 
     def _saveFile(self):
         wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
@@ -61,6 +62,7 @@ class Audio:
 
     def _playFrames(self):
         print("* playing recorded audio")
+        print(self.frames)
 
         playbackStream = self.pyaudio.open(
             format=self.pyaudio.get_format_from_width(RESPEAKER_WIDTH),
