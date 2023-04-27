@@ -17,14 +17,6 @@ class Audio:
     def __init__(self):
         self.frames = []
         self.pyaudio = pyaudio.PyAudio()
-        self.recordStream = self.pyaudio.open(
-            rate=RESPEAKER_RATE,
-            format=self.pyaudio.get_format_from_width(RESPEAKER_WIDTH),
-            channels=RESPEAKER_CHANNELS,
-            input=True,
-            input_device_index=RESPEAKER_INDEX,
-            start=False,
-            stream_callback=self.readCallback,)
 
     def readCallback(self, out_data, frame_count, time_info, status):
         self.frames.append(out_data)
@@ -37,12 +29,21 @@ class Audio:
 
     def startRecord(self):
         print("* recording stream started")
+        self.recordStream = self.pyaudio.open(
+            rate=RESPEAKER_RATE,
+            format=self.pyaudio.get_format_from_width(RESPEAKER_WIDTH),
+            channels=RESPEAKER_CHANNELS,
+            input=True,
+            input_device_index=RESPEAKER_INDEX,
+            start=False,
+            stream_callback=self.readCallback,)
         self.recordStream.start_stream()
         self.frames = []
 
     def stopRecord(self, play=True, save=False):
         print("* done recording")
         self.recordStream.stop_stream()
+        self.recordStream.close()
 
         if save:
             self._saveFile()
@@ -79,6 +80,7 @@ class Audio:
 
         # cleanup stuff
         playbackStream.stop_stream()
+        playbackStream.close()
 
     def terminate(self):
         self.pyaudio.terminate()
