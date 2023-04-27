@@ -12,6 +12,7 @@ if __name__ == '__main__':
 
         try:
             robot("Hello world how are you doing today?")
+            time.sleep(5)
         except KeyboardInterrupt:
             break
 
