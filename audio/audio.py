@@ -17,6 +17,7 @@ class Audio:
     def __init__(self):
         self.frames = []
         self.pyaudio = pyaudio.PyAudio()
+        self.recordStream = None
 
     def readCallback(self, out_data, frame_count, time_info, status):
         self.frames.append(out_data)
@@ -25,7 +26,7 @@ class Audio:
         return (out_data, pyaudio.paContinue)
 
     def isRecording(self):
-        if not self.recordStream:
+        if self.recordStream is None:
             return False
         return self.recordStream.is_active()
 
