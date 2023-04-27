@@ -25,6 +25,8 @@ class Audio:
         return (out_data, pyaudio.paContinue)
 
     def isRecording(self):
+        if not self.recordStream:
+            return False
         return self.recordStream.is_active()
 
     def startRecord(self):
