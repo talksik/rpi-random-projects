@@ -23,7 +23,15 @@ class Audio:
             channels=RESPEAKER_CHANNELS,
             input=True,
             input_device_index=RESPEAKER_INDEX,
-            start=False,)
+            start=False,
+            stream_callback=self.readCallback,)
+
+    def readCallback(self, out_data, frame_count, time_info, status):
+        print("reading chunk")
+        self.frames.append(out_data)
+        # If len(data) is less than requested frame_count, PyAudio automatically
+        # assumes the stream is finished, and the stream stops.
+        return (out_data, pyaudio.paContinue)
 
     def isRecording(self):
         return self.recordStream.is_active()
@@ -32,11 +40,6 @@ class Audio:
         print("* recording stream started")
         self.recordStream.start_stream()
         self.frames = []
-
-    def readChunk(self):
-        print("reading chunk")
-        data = self.recordStream.read(CHUNK)
-        self.frames.append(data)
 
     def stopRecord(self, play=True, save=False):
         print("* done recording")

@@ -18,15 +18,12 @@ GPIO.setup(BUTTON, GPIO.IN)
 audioInstance = audio.Audio()
 
 while True:
-    if audioInstance.isRecording():
-        audioInstance.readChunk()
-
     state = GPIO.input(BUTTON)
 
     if state:
         print("button: OFF")
         if audioInstance.isRecording():
-            audioInstance.stopRecord()
+            audioInstance.stopRecord(play=False)
     else:
         print("button: ON")
         if not audioInstance.isRecording():
