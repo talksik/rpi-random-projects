@@ -27,7 +27,6 @@ class Audio:
             stream_callback=self.readCallback,)
 
     def readCallback(self, out_data, frame_count, time_info, status):
-        print("reading chunk")
         self.frames.append(out_data)
         # If len(data) is less than requested frame_count, PyAudio automatically
         # assumes the stream is finished, and the stream stops.
