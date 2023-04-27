@@ -4,7 +4,7 @@ import os
 
 
 def robot(text):
-    os.system("espeak ' " + text + " ' ")
+    os.system("espeak --stdin '" + text + "' | aplay -D plughw:2,0 ")
 
 
 if __name__ == '__main__':
