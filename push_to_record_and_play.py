@@ -21,10 +21,8 @@ while True:
     state = GPIO.input(BUTTON)
 
     if state:
-        print("button: OFF")
         if audioInstance.isRecording():
             audioInstance.stopRecord(play=False)
     else:
-        print("button: ON")
         if not audioInstance.isRecording():
             audioInstance.startRecord()
