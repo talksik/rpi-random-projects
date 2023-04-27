@@ -62,7 +62,7 @@ class Audio:
 
     def _playFrames(self):
         print("* playing recorded audio")
-        print(self.frames)
+        print(len(self.frames))
 
         playbackStream = self.pyaudio.open(
             format=self.pyaudio.get_format_from_width(RESPEAKER_WIDTH),
@@ -73,11 +73,13 @@ class Audio:
 
         # loop through self.frames and play audio
         for frame in self.frames:
-            print("playing a frame")
             playbackStream.write(frame)
+
+        print("* done playing recorded audio")
 
         # cleanup stuff
         playbackStream.stop_stream()
+        playbackStream.close()
 
     def terminate(self):
         self.pyaudio.terminate()
