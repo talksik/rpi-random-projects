@@ -40,9 +40,9 @@ while True:
 
     if state:
         if audioInstance.isRecording():
-            audioInstance.stopRecord()
             turnOffLED()
+            audioInstance.stopRecord()
     else:
         if not audioInstance.isRecording():
-            audioInstance.startRecord()
             turnOnLED()
+            audioInstance.startRecord()
