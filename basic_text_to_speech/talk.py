@@ -5,7 +5,8 @@ from subprocess import call
 
 def robot(text):
     print("executing command")
-    call(['espeak', '--stdin', '"Hello world how are you doing today?"', '|', 'aplay', '-D', 'plughw:2,0'])
+    call(['espeak', '--stdin', '"Hello world how are you doing today?"',
+         '|', 'aplay', '-D plughw:2,0'])
 
 
 if __name__ == '__main__':
