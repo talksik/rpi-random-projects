@@ -1,7 +1,5 @@
 import time
 
-from subprocess import call
-
 from subprocess import Popen, PIPE
 
 
