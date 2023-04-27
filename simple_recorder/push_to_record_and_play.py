@@ -31,7 +31,7 @@ def turnOffLED():
 
 def turnOnLED():
     for i in range(PIXELS_N):
-        led.set_pixel_rgb(i, 0, 0, 255)
+        led.set_pixel(i, 255, 192, 203)
     led.show()
 
 
