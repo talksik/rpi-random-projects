@@ -79,7 +79,6 @@ class Audio:
 
         # cleanup stuff
         playbackStream.stop_stream()
-        playbackStream.close()
 
     def terminate(self):
         self.pyaudio.terminate()
