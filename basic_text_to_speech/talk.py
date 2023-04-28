@@ -13,8 +13,20 @@ if __name__ == '__main__':
     while True:
         try:
             print("initializing")
-            robot("Hello world how are you doing today?")
-            time.sleep(10)
+            robot("hey Heran?")
+            robot("Based on your age, health, and habits, you have 10950 days left")
+            robot("Make sure you chant hare krishna more")
+            time.sleep(5)
+
+            robot("hey Kam?")
+            robot("Hmm, you have time, but make sure to surrender to jesus")
+            time.sleep(5)
+
+            robot("hey Arjun")
+            robot("You have maybe 12000 days left to live")
+            robot("just drink some water")
+            time.sleep(5)
+
         except KeyboardInterrupt:
             break
 
