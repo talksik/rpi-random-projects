@@ -45,4 +45,5 @@ def transcribe():
 
 
 if __name__ == "__main__":
+    # 0.0.0.0 opens up to all ipv4 addresses
     app.run(host="0.0.0.0", port=5001, debug=True)
