@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
             robot("hey Arjun")
             robot("You have maybe 12000 days left to live")
-            robot("just drink some water")
+            robot("just drink some water or something")
             time.sleep(5)
 
         except KeyboardInterrupt:
