@@ -10,14 +10,6 @@ BUTTON = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON, GPIO.IN)
 
-while True:
-    state = GPIO.input(BUTTON)
-    if state:
-        print("off")
-    else:
-        print("on")
-    time.sleep(1)
-
 
 def robot(text):
     print("executing command")
@@ -29,7 +21,7 @@ def sayScript():
     print("initializing")
     robot("hey Heran?")
     robot("Based on your age, health, and habits, you have 10950 days left")
-    robot("Make sure you chant hare krishna more")
+    robot("Make sure you chant more")
     time.sleep(5)
 
     robot("hey Kam?")
@@ -51,7 +43,6 @@ if __name__ == '__main__':
                 print("on")
                 sayScript()
 
-            time.sleep(1)
         except KeyboardInterrupt:
             break
 
