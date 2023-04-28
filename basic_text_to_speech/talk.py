@@ -14,7 +14,7 @@ if __name__ == '__main__':
         try:
             print("initializing")
             robot("Hello world how are you doing today?")
-            break
+            time.sleep(10)
         except KeyboardInterrupt:
             break
 
