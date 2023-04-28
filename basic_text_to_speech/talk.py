@@ -2,6 +2,22 @@ import time
 
 import os
 
+import RPi.GPIO as GPIO
+import time
+
+BUTTON = 17
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(BUTTON, GPIO.IN)
+
+while True:
+    state = GPIO.input(BUTTON)
+    if state:
+        print("off")
+    else:
+        print("on")
+    time.sleep(1)
+
 
 def robot(text):
     print("executing command")
@@ -9,24 +25,33 @@ def robot(text):
     os.system("aplay -D plughw:2,0 output.wav")
 
 
+def sayScript():
+    print("initializing")
+    robot("hey Heran?")
+    robot("Based on your age, health, and habits, you have 10950 days left")
+    robot("Make sure you chant hare krishna more")
+    time.sleep(5)
+
+    robot("hey Kam?")
+    robot("you have some time, but make sure to surrender to jesus")
+    time.sleep(5)
+
+    robot("hey Arjun")
+    robot("You have maybe 12000 days left to live")
+    robot("just drink some water or something")
+
+
 if __name__ == '__main__':
     while True:
         try:
-            print("initializing")
-            robot("hey Heran?")
-            robot("Based on your age, health, and habits, you have 10950 days left")
-            robot("Make sure you chant hare krishna more")
-            time.sleep(5)
+            state = GPIO.input(BUTTON)
+            if state:
+                print("off")
+            else:
+                print("on")
+                sayScript()
 
-            robot("hey Kam?")
-            robot("Hmm, you have time, but make sure to surrender to jesus")
-            time.sleep(5)
-
-            robot("hey Arjun")
-            robot("You have maybe 12000 days left to live")
-            robot("just drink some water or something")
-            time.sleep(5)
-
+            time.sleep(1)
         except KeyboardInterrupt:
             break
 
