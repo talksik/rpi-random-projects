@@ -1,16 +1,10 @@
-
 # this program will record audio while the button is pressed
-# and then will transcibe it by hitting our api
+# and then will transcribe it by hitting our api
 
 import RPi.GPIO as GPIO
 
-# importing sys
-import sys
-# adding Folder_2/subfolder to the system path
-sys.path.insert(0, '/home/talksik/rpi-random-projects/audio')
-
-import audio
-
+import audio.audio
+from simple_recorder.apa102 import apa102
 
 BUTTON = 17
 
@@ -41,7 +35,8 @@ while True:
     if state:
         if audioInstance.isRecording():
             turnOffLED()
-            audioInstance.stopRecord()
+            savedFileName = audioInstance.stopRecord(save=True, play=False)
+            print("saved file: " + savedFileName)
     else:
         if not audioInstance.isRecording():
             turnOnLED()

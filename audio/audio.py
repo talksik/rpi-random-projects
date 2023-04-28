@@ -39,7 +39,8 @@ class Audio:
             input_device_index=RESPEAKER_INDEX,
             start=False,
             frames_per_buffer=CHUNK,
-            stream_callback=self.readCallback,)
+            stream_callback=self.readCallback,
+        )
         self.recordStream.start_stream()
         self._isRecording = True
 
@@ -49,21 +50,28 @@ class Audio:
         self.recordStream.close()
         self._isRecording = False
 
+        savedFileName = None
         if save:
-            self._saveFile()
+            savedFileName = self._saveFile()
         if play:
             self._playFrames()
 
         self.frames = []
 
+        return savedFileName if save else self.frames
+
     def _saveFile(self):
-        wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+        wf = wave.open(WAVE_OUTPUT_FILENAME, "wb")
         wf.setnchannels(RESPEAKER_CHANNELS)
-        wf.setsampwidth(self.pyaudio.get_sample_size(
-            self.pyaudio.get_format_from_width(RESPEAKER_WIDTH)))
+        wf.setsampwidth(
+            self.pyaudio.get_sample_size(
+                self.pyaudio.get_format_from_width(RESPEAKER_WIDTH)
+            )
+        )
         wf.setframerate(RESPEAKER_RATE)
-        wf.writeframes(b''.join(self.frames))
+        wf.writeframes(b"".join(self.frames))
         wf.close()
+        return WAVE_OUTPUT_FILENAME
 
     def _playFrames(self):
         print("* playing recorded audio")
@@ -74,7 +82,8 @@ class Audio:
             channels=RESPEAKER_CHANNELS,
             rate=RESPEAKER_RATE,
             output=True,
-            output_device_index=RESPEAKER_INDEX)
+            output_device_index=RESPEAKER_INDEX,
+        )
 
         # loop through self.frames and play audio
         for frame in self.frames:
