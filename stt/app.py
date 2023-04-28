@@ -1,10 +1,15 @@
 # this program will record audio while the button is pressed
 # and then will transcribe it by hitting our api
 
+# NOTE: run export PYTHONPATH=$PYTHONPATH:$(pwd) to run this file from the root directory of the project
+#  so that all different modules can be used
+
 import RPi.GPIO as GPIO
 
 import audio.audio as audio
 import simple_recorder.apa102 as apa102
+
+API_URL = "http://192.168.50.159:5001/transcribe"
 
 BUTTON = 17
 
