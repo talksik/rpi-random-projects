@@ -46,6 +46,9 @@ class Audio:
 
     def stopRecord(self, play=True, save=False):
         print("* done recording")
+        if self.recordStream is None:
+            return
+
         self.recordStream.stop_stream()
         self.recordStream.close()
         self._isRecording = False
@@ -58,7 +61,7 @@ class Audio:
 
         self.frames = []
 
-        return savedFileName if save else self.frames
+        return savedFileName if save else None
 
     def _saveFile(self):
         wf = wave.open(WAVE_OUTPUT_FILENAME, "wb")

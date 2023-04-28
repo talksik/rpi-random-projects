@@ -3,8 +3,8 @@
 
 import RPi.GPIO as GPIO
 
-import audio.audio
-from simple_recorder.apa102 import apa102
+import audio.audio as audio
+import simple_recorder.apa102 as apa102
 
 BUTTON = 17
 
@@ -36,7 +36,8 @@ while True:
         if audioInstance.isRecording():
             turnOffLED()
             savedFileName = audioInstance.stopRecord(save=True, play=False)
-            print("saved file: " + savedFileName)
+            if savedFileName is not None:
+                print("saved file: " + savedFileName)
     else:
         if not audioInstance.isRecording():
             turnOnLED()
