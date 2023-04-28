@@ -5,9 +5,9 @@
 #  so that all different modules can be used
 
 import RPi.GPIO as GPIO
-
 import audio.audio as audio
 import simple_recorder.apa102 as apa102
+import requests
 
 API_URL = "http://192.168.50.159:5001/transcribe"
 
@@ -43,6 +43,11 @@ while True:
             savedFileName = audioInstance.stopRecord(save=True, play=False)
             if savedFileName is not None:
                 print("saved file: " + savedFileName)
+                # make a request with the saved file to the api
+                response = requests.request(
+                    "POST", API_URL, files={"file": open(savedFileName, "rb")}
+                )
+                print(response.text)
     else:
         if not audioInstance.isRecording():
             turnOnLED()
