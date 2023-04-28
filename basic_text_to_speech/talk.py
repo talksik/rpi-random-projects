@@ -13,8 +13,7 @@ if __name__ == '__main__':
     while True:
         try:
             print("initializing")
-            command = robot("Hello world how are you doing today?")
-            print(command)
+            robot("Hello world how are you doing today?")
             time.sleep(10)
         except KeyboardInterrupt:
             break
