@@ -40,7 +40,7 @@ while True:
     if state:
         if audioInstance.isRecording():
             turnOffLED()
-            savedFileName = audioInstance.stopRecord(save=True, play=False)
+            savedFileName = audioInstance.stopRecord(save=True, play=True)
             if savedFileName is not None:
                 print("saved file: " + savedFileName)
                 # make a request with the saved file to the api
