@@ -8,6 +8,8 @@ import RPi.GPIO as GPIO
 import audio.audio as audio
 import simple_recorder.apa102 as apa102
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 
 API_URL = "http://192.168.50.159:5001/transcribe"
 
