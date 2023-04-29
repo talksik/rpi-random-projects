@@ -111,7 +111,6 @@ class Audio:
             channels=wf.getnchannels(),
             rate=wf.getframerate(),
             output=True,
-            output_device_index=RESPEAKER_INDEX,
         )
 
         # read data (based on the chunk size)
