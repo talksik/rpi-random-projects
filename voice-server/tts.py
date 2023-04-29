@@ -1,6 +1,7 @@
 import google.cloud.texttospeech as tts
 
 
+# todo: make sure to make the file name unique and delete it after sending
 def text_to_wav(voice_name: str, text: str):
     language_code = "-".join(voice_name.split("-")[:2])
     text_input = tts.SynthesisInput(text=text)

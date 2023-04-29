@@ -65,7 +65,7 @@ def text_to_speech():
     )
 
     # return the file
-    return send_file(f"{fileName}.wav", mimetype="audio/wav")
+    return send_file(f"{fileName}", mimetype="audio/wav")
 
 
 if __name__ == "__main__":
