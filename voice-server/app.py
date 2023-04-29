@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from flask import Flask, request, abort, send_file
 from tempfile import NamedTemporaryFile
 import tts
@@ -46,10 +49,12 @@ def transcribe():
 
 
 # endpoint to convert text to speech and return the file
-@app.route("/tts", methods=["GET"])
+@app.route("/tts", methods=["POST"])
 def text_to_speech():
-    # get the text from the request
-    text = request.form.get("text")
+    # get the text from the request json
+    content = request.get_json()
+    text = content['text']
+    
     if not text:
         abort(400, "Please provide text to convert to speech!")
 
