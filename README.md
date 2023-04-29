@@ -18,3 +18,10 @@ https://wiki.seeedstudio.com/ReSpeaker_2_Mics_Pi_HAT_Raspberry/#picovoice-with-r
 - clone the repo and do the ./install.sh (use the higher kernel one in this repo itself
 if the rpi is newer)
 
+# Running things
+Make sure python path is set to the root directory of the project. That ensures
+that we can reuse modules/other directories such as our internal audio module.
+
+
+Some programs have to be run from the project within the repo (such as voice-server)
+while others can be run from the root directory of the project directly.
