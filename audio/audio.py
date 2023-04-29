@@ -107,10 +107,11 @@ class Audio:
 
         # open stream based on the wave object which has been input.
         stream = p.open(
-            format=p.get_format_from_width(wf.getsampwidth()),
-            channels=wf.getnchannels(),
-            rate=wf.getframerate(),
+            format=p.get_format_from_width(RESPEAKER_WIDTH),
+            channels=RESPEAKER_CHANNELS,
+            rate=RESPEAKER_RATE,
             output=True,
+            output_device_index=RESPEAKER_INDEX,
         )
 
         # read data (based on the chunk size)
