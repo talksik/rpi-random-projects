@@ -49,13 +49,15 @@ def turnOnLED():
 # see if we should execute a certain command based on the current text block
 def process(text):
     if "live" in text and "how long" in text:
-        tts.say("")
+        tts.say("Heran")
     elif "good morning" in text:
         dt = datetime.now()
         dayOfWeek = dt.weekday()
         full_month_name = dt.strftime("%B")
         tts.say(f"Good morning! Today is {full_month_name} {dt.day}, {dt.year}. The day of the week is {dayOfWeek}")
 
+
+tts.say("hello, how can I help you today?")
 
 if __name__ == '__main__':
     while True:
@@ -74,6 +76,7 @@ if __name__ == '__main__':
                     print(response.json())
                     results = response.json().get("results")
                     command = results[0].transcript
+                    process(command)
         else:
             if not audioInstance.isRecording():
                 turnOnLED()
