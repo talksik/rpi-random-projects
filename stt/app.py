@@ -6,17 +6,16 @@
 
 from dotenv import load_dotenv
 load_dotenv()
+import sys
+import os
 # Get the current working directory
 cwd = os.getcwd()
-
 sys.path.append(cwd)
 
 import requests
 import simple_recorder.apa102 as apa102
-import rpi-random-projects.audio.audio as audio
+import audio.audio as audio
 import RPi.GPIO as GPIO
-import sys
-import os
 
 
 
