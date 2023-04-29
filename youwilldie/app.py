@@ -12,6 +12,14 @@ clear currentTextBlock after 200 characters as well
 - good morning!
 """
 
+from dotenv import load_dotenv
+load_dotenv()
+import sys
+import os
+# Get the current working directory
+cwd = os.getcwd()
+sys.path.append(cwd)
+
 import time
 
 import RPi.GPIO as GPIO

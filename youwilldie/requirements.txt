@@ -1,0 +1,5 @@
+RPi.GPIO
+requests
+spidev
+pyaudio
+python-dotenv
