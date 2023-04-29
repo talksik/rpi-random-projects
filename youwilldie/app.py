@@ -11,9 +11,6 @@ clear currentTextBlock after 200 characters as well
 - hey rameelo, how long will I live?
 - good morning!
 """
-
-from dotenv import load_dotenv
-load_dotenv()
 import sys
 import os
 # Get the current working directory
