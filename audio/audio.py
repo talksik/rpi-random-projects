@@ -98,5 +98,33 @@ class Audio:
         self.playbackStream.stop_stream()
         self.playbackStream.close()
 
+    def playFile(self, fileName: str):
+        # open the file for reading.
+        wf = wave.open(fileName, "rb")
+
+        # create an audio object
+        p = pyaudio.PyAudio()
+
+        # open stream based on the wave object which has been input.
+        stream = p.open(
+            format=p.get_format_from_width(wf.getsampwidth()),
+            channels=wf.getnchannels(),
+            rate=wf.getframerate(),
+            output=True,
+            output_device_index=RESPEAKER_INDEX,
+        )
+
+        # read data (based on the chunk size)
+        data = wf.readframes(CHUNK)
+        # play stream (looping from beginning of file to the end)
+        while data:
+            # writing to the stream is what *actually* plays the sound.
+            stream.write(data)
+            data = wf.readframes(CHUNK)
+
+        # cleanup stuff.
+        stream.close()
+        p.terminate()
+
     def terminate(self):
         self.pyaudio.terminate()
