@@ -74,8 +74,8 @@ if __name__ == '__main__':
                         "POST", API_URL, files={"file": open(savedFileName, "rb")}
                     )
                     print(response.json())
-                    results = response.json().get("results")
-                    command = results[0].transcript
+                    results = response.json()["results"]
+                    command = results[0]["transcript"]
                     process(command)
         else:
             if not audioInstance.isRecording():
