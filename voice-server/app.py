@@ -1,10 +1,10 @@
+import whisper
+import tts
+from tempfile import NamedTemporaryFile
+from flask import Flask, request, abort, send_file
 from dotenv import load_dotenv
 load_dotenv()
 
-from flask import Flask, request, abort, send_file
-from tempfile import NamedTemporaryFile
-import tts
-import whisper
 
 # Load the Whisper model:
 model = whisper.load_model("base")
@@ -54,7 +54,7 @@ def text_to_speech():
     # get the text from the request json
     content = request.get_json()
     text = content['text']
-    
+
     if not text:
         abort(400, "Please provide text to convert to speech!")
 

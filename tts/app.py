@@ -11,12 +11,23 @@ API_URL = "http://192.168.50.159:5001/tts"
 
 audioInstance = audio.Audio()
 
-response = requests.post(API_URL, data={'text': 'hello world'})
-print(response)
+# send request with json
+headers = {
+    "Content-type": "application/json",
+}
+response = requests.post(
+    API_URL,
+    headers=headers,
+    json={"text": "hello world. the weather today is sunny."}
+)
 
-# get the file data from the response
-# write the file data to a file
-# save the file
+# get the file data from the response and write to temp local file
+fileName = "output.wav"
+# todo: move this writing process to audio.py
+with open(fileName, 'wb') as f:
+    f.write(response.content)
+
+    f.close()
 
 # play the file
-audioInstance.playFile('audio.wav')
+audioInstance.playFile(fileName)
