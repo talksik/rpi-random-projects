@@ -1,5 +1,6 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, send_file
 from tempfile import NamedTemporaryFile
+import tts
 import whisper
 
 # Load the Whisper model:
@@ -42,6 +43,24 @@ def transcribe():
 
     # This will be automatically converted to JSON.
     return {"results": results}
+
+
+# endpoint to convert text to speech and return the file
+@app.route("/tts", methods=["GET"])
+def text_to_speech():
+    # get the text from the request
+    text = request.form.get("text")
+    if not text:
+        abort(400, "Please provide text to convert to speech!")
+
+    # call the text_to_wav function from tts.py
+    fileName = tts.text_to_wav(
+        voice_name="en-GB-Neural2-B",
+        text=text,
+    )
+
+    # return the file
+    return send_file(f"{fileName}.wav", mimetype="audio/wav")
 
 
 if __name__ == "__main__":
