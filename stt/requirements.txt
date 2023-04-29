@@ -6,3 +6,4 @@ urllib3==1.26.15
 RPi.GPIO
 pyaudio
 python-dotenv
+spidev
