@@ -49,7 +49,7 @@ def turnOnLED():
 # see if we should execute a certain command based on the current text block
 def process(text):
     formatted = text.lower()
-    if "live" in text and "how long" in formatted:
+    if "live" in formatted:
         # get the number of days left until 2058
         daysLeftHeran = (datetime(2057, 1, 1) - datetime.now()).days
         daysLeftKam = (datetime(2043, 1, 1) - datetime.now()).days
