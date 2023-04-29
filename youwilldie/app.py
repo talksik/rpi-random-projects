@@ -50,7 +50,13 @@ def turnOnLED():
 def process(text):
     formatted = text.lower()
     if "live" in text and "how long" in formatted:
-        tts.say("Heran")
+        # get the number of days left until 2058
+        daysLeftHeran = (datetime(2057, 1, 1) - datetime.now()).days
+        daysLeftKam = (datetime(2043, 1, 1) - datetime.now()).days
+        daysLeftArjun = (datetime(2070, 1, 1) - datetime.now()).days
+
+        tts.say(
+            f"Heran, you have {daysLeftHeran} days left to live. Kam, you have {daysLeftKam} days left to live. Arjun, you have {daysLeftArjun} days left to live.")
     elif "good morning" in formatted:
         dt = datetime.now()
         dayOfWeek = dt.strftime('%A')
