@@ -48,9 +48,10 @@ def turnOnLED():
 
 # see if we should execute a certain command based on the current text block
 def process(text):
-    if "live" in text and "how long" in text:
+    formatted = text.lower()
+    if "live" in text and "how long" in formatted:
         tts.say("Heran")
-    elif "good morning" in text:
+    elif "good morning" in formatted:
         dt = datetime.now()
         dayOfWeek = dt.weekday()
         full_month_name = dt.strftime("%B")
