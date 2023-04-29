@@ -56,6 +56,8 @@ def process(text):
         dayOfWeek = dt.weekday()
         full_month_name = dt.strftime("%B")
         tts.say(f"Good morning! Today is {full_month_name} {dt.day}, {dt.year}. The day of the week is {dayOfWeek}")
+    else:
+        tts.say("Sorry, I don't understand that command")
 
 
 tts.say("hello, how can I help you today?")
