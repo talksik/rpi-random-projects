@@ -4,12 +4,13 @@
 # NOTE: run export PYTHONPATH=$PYTHONPATH:$(pwd) to run this file from the root directory of the project
 #  so that all different modules can be used
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import RPi.GPIO as GPIO
 import audio.audio as audio
 import simple_recorder.apa102 as apa102
 import requests
-from dotenv import load_dotenv
-load_dotenv()
 
 API_URL = "http://192.168.50.159:5001/transcribe"
 
