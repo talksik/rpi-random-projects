@@ -1,5 +1,6 @@
 import google.cloud.texttospeech as tts
 
+OUTPUT_FILE = "output.wav"
 
 # todo: make sure to make the file name unique and delete it after sending
 def text_to_wav(voice_name: str, text: str):
@@ -17,9 +18,8 @@ def text_to_wav(voice_name: str, text: str):
         audio_config=audio_config,
     )
 
-    filename = f"{voice_name}.wav"
-    with open(filename, "wb") as out:
+    with open(OUTPUT_FILE, "wb") as out:
         out.write(response.audio_content)
-        print(f'Generated speech saved to "{filename}"')
+        print(f'Generated speech saved to "{OUTPUT_FILE}"')
 
-    return filename
+    return OUTPUT_FILE
