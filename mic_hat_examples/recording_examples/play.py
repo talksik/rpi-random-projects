@@ -17,11 +17,11 @@ wf = wave.open(sys.argv[1], 'rb')
 p = pyaudio.PyAudio()
 
 # open stream based on the wave object which has been input.
-stream = p.open(format = p.get_format_from_width(wf.getsampwidth()),
-                channels = wf.getnchannels(),
-                rate = wf.getframerate(),
-                output = True,
-                output_device_index = RESPEAKER_INDEX)
+stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                channels=wf.getnchannels(),
+                rate=wf.getframerate(),
+                output=True,
+                output_device_index=RESPEAKER_INDEX)
 
 # read data (based on the chunk size)
 data = wf.readframes(chunk)
@@ -32,5 +32,5 @@ while data:
     data = wf.readframes(chunk)
 
 # cleanup stuff.
-stream.close()    
+stream.close()
 p.terminate()
