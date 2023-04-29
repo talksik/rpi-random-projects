@@ -106,10 +106,20 @@ class Audio:
         p = pyaudio.PyAudio()
 
         # open stream based on the wave object which has been input.
+        # todo: figure out how to play for any output device
+
+        # this works on my mac
+        # stream = p.open(
+        #     format=p.get_format_from_width(wf.getsampwidth()),
+        #     channels=wf.getnchannels(),
+        #     rate=wf.getframerate(),
+        #     output=True,
+        # )
+
         stream = p.open(
             format=p.get_format_from_width(RESPEAKER_WIDTH),
             channels=RESPEAKER_CHANNELS,
-            rate=8000,
+            rate=RESPEAKER_RATE,
             output=True,
             output_device_index=RESPEAKER_INDEX,
         )
