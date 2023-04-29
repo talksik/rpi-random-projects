@@ -109,7 +109,7 @@ class Audio:
         stream = p.open(
             format=p.get_format_from_width(RESPEAKER_WIDTH),
             channels=RESPEAKER_CHANNELS,
-            rate=RESPEAKER_RATE,
+            rate=8000,
             output=True,
             output_device_index=RESPEAKER_INDEX,
         )
