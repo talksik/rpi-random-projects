@@ -53,9 +53,10 @@ def process(text):
         tts.say("Heran")
     elif "good morning" in formatted:
         dt = datetime.now()
-        dayOfWeek = dt.weekday()
+        dayOfWeek = dt.strftime('%A')
         full_month_name = dt.strftime("%B")
-        tts.say(f"Good morning! Today is {full_month_name} {dt.day}, {dt.year}. The day of the week is {dayOfWeek}")
+        tts.say(
+            f"Good morning! Today is {dayOfWeek}, {full_month_name}, {dt.day}, {dt.year}.")
     else:
         tts.say("Sorry, I don't understand that command")
 
