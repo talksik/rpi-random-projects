@@ -6,11 +6,19 @@
 
 from dotenv import load_dotenv
 load_dotenv()
+# Get the current working directory
+cwd = os.getcwd()
 
-import RPi.GPIO as GPIO
-import audio.audio as audio
-import simple_recorder.apa102 as apa102
+sys.path.append(cwd)
+
 import requests
+import simple_recorder.apa102 as apa102
+import rpi-random-projects.audio.audio as audio
+import RPi.GPIO as GPIO
+import sys
+import os
+
+
 
 API_URL = "http://192.168.50.159:5001/transcribe"
 
