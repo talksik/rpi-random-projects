@@ -59,6 +59,7 @@ class Audio:
         if play:
             self._playFrames()
 
+        # reset frames
         self.frames = []
 
         return savedFileName if save else None
